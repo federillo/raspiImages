@@ -1,0 +1,6 @@
+usb start
+echo "usb works"
+dhcp 00200000 10.42.0.1:uimage.uboot
+echo "dhcp works"
+tftpboot 00c00000 10.42.0.1:initramfs.uboot
+bootm 00200000 00c00000

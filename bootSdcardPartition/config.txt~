@@ -1,0 +1,2 @@
+kernel=u-boot.img
+<rootfs.cpio>

@@ -1,0 +1,39 @@
+1.Generate two partition on sdcard
+see S74
+-bootpartion: 	boot vfat
+-rootfilesystem:rootfs ext2
+
+2.load configs for:
+see S141
+-Buildroot
+-Busybox
+-Kernel
+-uclibc
+
+3.Generate Kernel and Rootfs
+
+info: 
+select zImage under buildrootconfig! 
+felicia@felicia:~/embedded/raspi/buildroot-2013.05$ make menuconfig 
+-->kernel-kernel binary format (zImage)
+
+felicia@felicia:~/embedded/raspi/buildroot-2013.05$ PATH=$PATH:~/embedded/raspi/buildroot-2013.05/output/host/usr/bin/
+
+felicia@felicia:~/embedded/raspi/buildroot-2013.05$ make
+
+4.copy rootfs.tar to rootfilesystem on sdcard
+
+lsblk--> shows sdcard names
+
+felicia@felicia:~/embedded/raspi/buildroot-2013.05/output/images$ \
+sudo mkfs.ext4 -i 1024 -L rootfs /dev/mmcblk0p2 
+
+felicia@felicia:~/embedded/raspi/buildroot-2013.05/output/images$ cd /media/felicia/rootfs12
+
+felicia@felicia:/media/felicia/rootfs12$ sudo tar xvf ~/embedded/raspi/buildroot-2013.05/output/images/rootfs.tar
+
+5.copy zImage to bootpartion on sdcard
+
+felicia@felicia:~/embedded/raspi/buildroot-2013.05/output/images$ sudo cp zImage /media/felicia/kernel.img
+
+6.copy bootcode.bin, config.txt ("kernel=kernel.img"), LICENCE.broadcom, start.elf to bootpartion on sdcard
